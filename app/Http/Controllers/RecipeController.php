@@ -56,6 +56,17 @@ class RecipeController extends Controller
         
     }
 
+    public function show($slug)
+    {
+        $recipes = Recipe::with('category','ratings.user','comments.user')->where('slug',$slug)->first();
+        if(!$recipes)
+            {
+                return response()->json(['message'=>'Recipe not found'],404);
+            }
+        return response()->json(['recipes'=>$recipes],200);
+    }
+
+
     public function destroy($slug)
     {
         $recipes = Recipe::where('slug',$slug)->first();
